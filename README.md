@@ -89,7 +89,7 @@ img.show()
 ```
 
 ## 7. WinImageShowPlugin
-A better and way faster Image.show() implementation for Python 3.x x64 on Windows.
+A better and way faster Image.show() implementation for Python 3.x x64 in Windows 10/11.
 
 Images are shown in a native resizable viewer window, without creating
 any temporary files.  
