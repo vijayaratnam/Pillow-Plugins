@@ -11,7 +11,7 @@ from xml.etree.ElementTree import Element
 #import cssselect2
 from .cssselect2 import ElementWrapper
 
-from defusedxml import ElementTree
+from .defusedxml import ElementTree
 
 from . import css
 from .features import match_features
