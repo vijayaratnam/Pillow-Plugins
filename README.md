@@ -77,8 +77,6 @@ The PIL image file format supports *any* image mode that Pillow supports - that'
 
 The format supports DEFLATE compression of the image data, which is the same compression that PNG uses. Therefor a compressed RGB PIL file has roughly the same filesize as the same image stored as PNG.
 
-There is also a [Thumbnail Handler shell extension](https://github.com/59de44955ebd/PIL-Thumbnail-Handler) for Windows that allows Windows Explorer to show thumbnails for PIL files (15 modes supported).
-
 Usage:
 ```python
 from PIL import Image
@@ -87,6 +85,11 @@ import PilImagePlugin
 img = Image.open("test.pil")
 img.show()
 ```
+
+There is also a [Thumbnail Handler shell extension](https://github.com/59de44955ebd/PIL-Thumbnail-Handler) for Windows that allows Windows Explorer to show thumbnails for PIL files (15 modes supported).
+
+*Windows 11 Explorer showing thumbnails for PIL files with various image modes*     
+![](screenshots/modes.jpg)
 
 ## 7. WinImageShowPlugin
 A better and way faster Image.show() implementation for Python 3.x x64 in Windows 10/11.
