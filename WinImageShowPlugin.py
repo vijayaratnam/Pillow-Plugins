@@ -89,6 +89,7 @@ gdi32.CreateCompatibleDC.restype = HDC
 gdi32.CreateDIBSection.argtypes = (HDC, LPVOID, UINT, LPVOID, HANDLE, DWORD)
 gdi32.CreateDIBSection.restype = HBITMAP
 gdi32.DeleteDC.argtypes = (HDC,)
+gdi32.DeleteObject.argtypes = (HANDLE,)
 gdi32.GetStockObject.restype = HANDLE
 gdi32.SelectObject.argtypes = (HDC, HANDLE)
 gdi32.SelectObject.restype = HANDLE
@@ -292,6 +293,7 @@ class WinImageShow():
             user32.TranslateMessage(byref(msg))
             user32.DispatchMessageW(byref(msg))
         user32.DestroyWindow(self.hwnd)
+        gdi32.DeleteObject(self.h_bitmap)
 
     # Show window centered on screen and never bigger than the actual work area (desktop minus taskbar)
     def get_win_size_for_image(self, img):
