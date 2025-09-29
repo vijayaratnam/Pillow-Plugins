@@ -2,6 +2,14 @@ import os
 import subprocess
 from PIL import Image
 
+"""
+    Location of sdraw can be customized like this:
+
+    import LibreImagePlugin
+    LibreImagePlugin.SDRAW_BIN = "/foo/bar/sdraw"
+    ...
+"""
+
 IS_WIN = os.name == "nt"
 if IS_WIN:
     SDRAW_BIN = r"C:\Program Files\LibreOffice\program\sdraw.exe"
@@ -9,7 +17,7 @@ if IS_WIN:
     startupinfo = subprocess.STARTUPINFO()
     startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 else:
-    SDRAW_BIN = "/opt/libreoffice24.8/program/sdraw"
+    SDRAW_BIN = "/opt/libreoffice24.8/program/sdraw"  # Debian, LibreOffice 24.8
     startupinfo = None
 
 def _open(fp, filename, ** kwargs):
@@ -18,7 +26,6 @@ def _open(fp, filename, ** kwargs):
         raise SyntaxError("No LibreOffice file")
 
     tmp_dir = os.environ["TMP"] if IS_WIN else "/tmp"
-
     tmp_dir = os.path.join(tmp_dir, "~libreplug")
     if not os.path.isdir(tmp_dir):
         os.mkdir(tmp_dir)
