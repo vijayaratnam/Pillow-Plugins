@@ -10,7 +10,7 @@ from PIL import Image
 import FfmpegImagePlugin
 
 img = Image.open("test.mp4")
-img.seek(123)
+img.seek(123)  # load frame 124 (seek starts counting with 0)
 img.show()
 ```
 
@@ -41,7 +41,7 @@ from PIL import Image
 import GhostImagePlugin
 
 img = Image.open("test.pdf")
-img.seek(2)
+img.seek(2)  # load page 3 (seek starts counting with 0)
 img.show()
 ```
 
