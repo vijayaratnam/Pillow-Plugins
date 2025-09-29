@@ -1,4 +1,4 @@
-# Pillow-Plugins - 6 plugins for Pillow (Python)
+# Pillow-Plugins - 7 plugins for Pillow (Python)
 
 ## 1. FfmpegImagePlugin
 Allows [Pillow](https://pillow.readthedocs.io/) to load arbitrary video files as (virtual) multi-frame images.  
@@ -70,13 +70,30 @@ import SvgImagePlugin
 img = Image.open("test.svg", output_width = 800)
 img.show()
 ```
+## 6. PilImagePlugin
+Simple image plugin that allows Pillow to read and write image files with a custom file image format called "PIL" (.pil). 
 
-## 6. WinImageShowPlugin
+The PIL image file format supports *any* image mode that Pillow supports - that's the idea of the format and the reason why I invented it. So it can be used to save and load images also with rather exotic modes like e.g. "PA" (palette + alpha channel) or "LA" (grayscale + alpha channel).
+
+The format supports DEFLATE compression of the image data, which is the same compression that PNG uses. Therefor a compressed RGB PIL file has roughly the same filesize as the same image stored as PNG.
+
+
+Usage:
+```python
+from PIL import Image
+import PilImagePlugin
+
+img = Image.open("test.pil")
+img.show()
+```
+
+## 7. WinImageShowPlugin
 A better and way faster Image.show() implementation for Python 3.x x64 on Windows.
 
 Images are shown in a native resizable viewer window, without creating
-any temporary files. While the window is displayed, other image files
-can be dropped into it from Explorer to view them.
+any temporary files.  
+While the window is displayed, other (Pillow compatible) image files
+can be dropped into it from Explorer to view them.  
 In addition to Pillow the script only uses ctypes and the Windows API,
 no 3rd-party modules involved.
 
@@ -88,3 +105,5 @@ import WinImageShowPlugin  # import overwrites Image.show() method
 img = Image.open("test.tif")
 img.show()  # Blocks code execution until viewer window is closed
 ```
+The result in Windows 11   
+![](screenshots/show.jpg)
