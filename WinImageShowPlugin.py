@@ -145,75 +145,13 @@ WM_QUIT = 18
 WS_OVERLAPPEDWINDOW = 13565952
 WS_VISIBLE = 268435456
 
-########################################
-#
-########################################
-def img_to_hbitmap(img):
-    if img.mode in ("LA", "PA"):
-        img = img.convert(img.mode[:-1])
-    elif img.mode not in ("RGB", "RGBA", "L", "1", "P"):
-        img = img.convert("RGB")
-    pal_size = 0
-    if img.mode == "1":
-        pal_size = 8
-        pal = [0, 0, 0, 0, 255, 255, 255, 0]
-        bbp = 1
-    elif img.mode == "L":
-        pal_size = 1024
-        pal = [0] * 1024
-        for i in range(256):
-            pal[4 * i:4 * i + 3] = i, i, i
-        bbp = 8
-    elif img.mode == "P":   #bbp <= 8:
-        pal = img.getpalette("BGRX")
-        pal_size = len(pal)
-        bbp = 8
-    elif img.mode == "RGB":
-        bbp = 24
-    elif img.mode == "RGBA":
-        bbp = 32
-
-    f = io.BytesIO()
-    img.save(f, "DIB")
-    biClrUsed = pal_size // 4
-
-    class BITMAPINFO(Structure):
-        _pack_ = 1
-        _fields_ = [
-            ("bmiHeader", BITMAPINFOHEADER),
-            ("bmiColors", c_ubyte * pal_size),
-        ]
-
-    bmi = BITMAPINFO()
-    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER)
-    bmi.bmiHeader.biWidth = img.width
-    bmi.bmiHeader.biHeight = img.height
-    bmi.bmiHeader.biPlanes = 1
-    bmi.bmiHeader.biBitCount = bbp
-    bmi.bmiHeader.biCompression = BI_RGB
-    bmi.bmiHeader.biSizeImage = ((((img.width * bmi.bmiHeader.biBitCount) + 31) & ~31) >> 3) * img.height
-    bmi.bmiHeader.biClrUsed = biClrUsed
-    if biClrUsed:
-        bmi.bmiColors = (c_ubyte * pal_size)(*pal)
-
-    hdc = gdi32.CreateCompatibleDC(0)
-    h_bitmap = gdi32.CreateDIBSection(None, byref(bmi), DIB_RGB_COLORS, None, None, 0)
-    gdi32.SetDIBits(
-        0, h_bitmap, 0, img.height,
-        f.getvalue()[sizeof(BITMAPINFOHEADER) + pal_size:],
-        byref(bmi),
-        DIB_RGB_COLORS
-    )
-    gdi32.DeleteDC(hdc)
-    return h_bitmap
-
 
 class WinImageShow():
 
     def __init__(self, img, window_title):
 
         self.img = img
-        self.h_bitmap = img_to_hbitmap(img)
+        self.h_bitmap = self._image_to_hbitmap(img)
         self.img_ratio = img.width / img.height
 
         # Show image centered and resized to window while keeping its aspect ratio
@@ -252,11 +190,11 @@ class WinImageShow():
             filename = file_buffer[:].split("\0", 1)[0]
             try:
                 img = Image.open(filename)
-                self.h_bitmap = img_to_hbitmap(img)
+                self.h_bitmap = self._image_to_hbitmap(img)
                 self.img = img
                 self.img_ratio = img.width / img.height
                 user32.SetWindowTextW(hwnd, f"{filename} - {img.mode} - {img.width} x {img.height}")
-                user32.SetWindowPos(hwnd, 0, *self.get_win_size_for_image(img), 0)
+                user32.SetWindowPos(hwnd, 0, *self._get_win_size_for_image(img), 0)
                 user32.RedrawWindow(hwnd, 0, 0, RDW_ERASE | RDW_INVALIDATE)
             finally:
                 return 0
@@ -284,7 +222,7 @@ class WinImageShow():
             wndclass.lpszClassName,
             window_title,
             WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-            *self.get_win_size_for_image(img),
+            *self._get_win_size_for_image(img),
             None, None, None, None
         )
         shell32.DragAcceptFiles(self.hwnd, True)
@@ -295,8 +233,11 @@ class WinImageShow():
         user32.DestroyWindow(self.hwnd)
         gdi32.DeleteObject(self.h_bitmap)
 
-    # Show window centered on screen and never bigger than the actual work area (desktop minus taskbar)
-    def get_win_size_for_image(self, img):
+    def _get_win_size_for_image(self, img):
+        """
+        Show window centered on screen and never bigger than
+        the actual work area (desktop minus taskbar)
+        """
         rc_desktop = RECT()
         user32.SystemParametersInfoA(SPI_GETWORKAREA, 0, byref(rc_desktop), 0)
         rc_desktop.right -= 32  # Windows 11 DWM fix
@@ -313,6 +254,66 @@ class WinImageShow():
         x = (rc_desktop.right - win_width) // 2 + 16
         y = (rc_desktop.bottom - win_height) // 2
         return x, y, win_width, win_height
+
+    def _image_to_hbitmap(self, img):
+        if img.mode in ("LA", "PA"):
+            img = img.convert(img.mode[:-1])
+        elif img.mode not in ("RGB", "RGBA", "L", "1", "P"):
+            img = img.convert("RGB")
+        pal_size = 0
+        if img.mode == "1":
+            pal_size = 8
+            pal = [0, 0, 0, 0, 255, 255, 255, 0]
+            bbp = 1
+        elif img.mode == "L":
+            pal_size = 1024
+            pal = [0] * 1024
+            for i in range(256):
+                pal[4 * i:4 * i + 3] = i, i, i
+            bbp = 8
+        elif img.mode == "P":   #bbp <= 8:
+            pal = img.getpalette("BGRX")
+            pal_size = len(pal)
+            bbp = 8
+        elif img.mode == "RGB":
+            bbp = 24
+        elif img.mode == "RGBA":
+            bbp = 32
+
+        f = io.BytesIO()
+        img.save(f, "DIB")
+        biClrUsed = pal_size // 4
+
+        class BITMAPINFO(Structure):
+            _pack_ = 1
+            _fields_ = [
+                ("bmiHeader", BITMAPINFOHEADER),
+                ("bmiColors", c_ubyte * pal_size),
+            ]
+
+        bmi = BITMAPINFO()
+        bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER)
+        bmi.bmiHeader.biWidth = img.width
+        bmi.bmiHeader.biHeight = img.height
+        bmi.bmiHeader.biPlanes = 1
+        bmi.bmiHeader.biBitCount = bbp
+        bmi.bmiHeader.biCompression = BI_RGB
+        bmi.bmiHeader.biSizeImage = ((((img.width * bmi.bmiHeader.biBitCount) + 31) & ~31) >> 3) * img.height
+        bmi.bmiHeader.biClrUsed = biClrUsed
+        if biClrUsed:
+            bmi.bmiColors = (c_ubyte * pal_size)(*pal)
+
+        hdc = gdi32.CreateCompatibleDC(0)
+        h_bitmap = gdi32.CreateDIBSection(None, byref(bmi), DIB_RGB_COLORS, None, None, 0)
+        gdi32.SetDIBits(
+            0, h_bitmap, 0, img.height,
+            f.getvalue()[sizeof(BITMAPINFOHEADER) + pal_size:],
+            byref(bmi),
+            DIB_RGB_COLORS
+        )
+        gdi32.DeleteDC(hdc)
+        return h_bitmap
+
 
 # This overwrites the Image.show() method with our custom implementation
 import sys
