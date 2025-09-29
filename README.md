@@ -71,7 +71,7 @@ img = Image.open("test.svg", output_width = 800)
 img.show()
 ```
 ## 6. PilImagePlugin
-Simple image plugin that allows Pillow to read and write image files with a custom file image format called "PIL" (.pil). 
+Simple image plugin that allows Pillow to read and write image files with a custom image file format called "PIL" (.pil). 
 
 The PIL image file format supports *any* image mode that Pillow supports - that's the idea of the format and the reason why I invented it. So it can be used to save and load images also with rather exotic modes like e.g. "PA" (palette + alpha channel) or "LA" (grayscale + alpha channel), or 1-bit images with 2 custom colors instead of b/w (rawmode "P:1").
 
