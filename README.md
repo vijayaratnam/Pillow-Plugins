@@ -86,7 +86,7 @@ img = Image.open("test.pil")
 img.show()
 ```
 
-There is also a [Thumbnail Handler shell extension](https://github.com/59de44955ebd/PIL-Thumbnail-Handler) for Windows that allows Windows Explorer to show thumbnails for PIL files (15 modes supported).
+There is also a [Thumbnail Handler Shell Extension](https://github.com/59de44955ebd/PIL-Thumbnail-Handler) for Windows that allows Windows Explorer to show thumbnails for PIL files (15 modes supported).
 
 *Windows 11 Explorer showing thumbnails for PIL files with various image modes*     
 ![](screenshots/modes.jpg)
