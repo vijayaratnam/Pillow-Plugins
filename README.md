@@ -16,7 +16,7 @@ img.show()
 
 ## 2. FreeImagePlugin
 Read support for additional image file formats/image modes based on FreeImage.
-- MNG
+- MNG (first frame, i.e. not animated)
 - Apple PICT
 - PSD/TIFF with 16 and 32 bits (floating point) per channel.  
 
