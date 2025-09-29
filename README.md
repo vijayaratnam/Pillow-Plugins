@@ -15,7 +15,7 @@ img.show()
 ```
 
 ## 2. FreeImagePlugin
-Read support for additional image file formats/image modes based on FreeImage]
+Read support for additional image file formats/image modes based on FreeImage.
 - MNG
 - Apple PICT
 - PSD/TIFF with 16 and 32 bits (floating point) per channel.  
@@ -47,7 +47,7 @@ img.show()
 
 ## 4. LibreImagePlugin
 Allows Pillow to load CorelDraw (CDR), Macromedia FreeHand (FH/FHx) and OpenDocument Graphic (ODG) files as images by using LibreOffice Draw (headless).  
-Requires [LibreOffice Draw](https://www.libreoffice.org/) (or OpenOffice Draw).
+Requires [LibreOffice Draw](https://www.libreoffice.org/) (or OpenOffice Draw, not tested).
 
 Usage:
 ```python
