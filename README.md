@@ -77,6 +77,7 @@ The PIL image file format supports *any* image mode that Pillow supports - that'
 
 The format supports DEFLATE compression of the image data, which is the same compression that PNG uses. Therefor a compressed RGB PIL file has roughly the same filesize as the same image stored as PNG.
 
+There is also a [Thumbnail Handler shell extension](https://github.com/59de44955ebd/PIL-Thumbnail-Handler) for Windows that allows Windows Explorer to show thumbnails for PIL files (15 modes supported).
 
 Usage:
 ```python
