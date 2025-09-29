@@ -20,7 +20,7 @@ Read support for additional image file formats/image modes based on FreeImage.
 - Apple PICT
 - PSD/TIFF with 16 and 32 bits (floating point) per channel.  
 
-Requires [FreeImage](https://freeimage.sourceforge.io/) (DLL for Windows is included).
+Requires [FreeImage](https://freeimage.sourceforge.io/) (DLL for Windows is included, in Debian-based systems install it with `sudo apt install libfreeimage3`).
 
 Usage:
 ```python
@@ -33,7 +33,7 @@ img.show()
 
 ## 3. GhostImagePlugin
 Allows Pillow to load PDF and Adobe Illustrator (AI) files as (virtual) multi-frame images.  
-Requires [Ghostscript](https://ghostscript.com/) (binary for Windows is included).
+Requires [Ghostscript](https://ghostscript.com/) (binary for Windows is included, in Debian-based systems install it with `sudo apt install ghostscript`).
 
 Usage:
 ```python
@@ -59,7 +59,7 @@ img.show()
 ```
 
 ## 5. SvgImagePlugin
-Allows Pillow to load SVG vector graphic files as images.
+Allows Pillow to load SVG vector graphic files as images.  
 Depends on [pycairo](https://pycairo.readthedocs.io/) (`pip install pycairo`, also available for Windows).
 
 Usage:
