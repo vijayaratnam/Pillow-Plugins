@@ -98,7 +98,7 @@ Images are shown in a native resizable viewer window, without creating
 any temporary files.  
 While the window is displayed, other (Pillow compatible) image files
 can be dropped into it from Explorer to view them.  
-In addition to Pillow the script only uses ctypes and the Windows API,
+In addition to Pillow the plugin only uses ctypes and the Windows API,
 no 3rd-party modules involved.
 
 Usage:
