@@ -46,7 +46,7 @@ img.show()
 ```
 
 ## 4. LibreImagePlugin
-Allows Pillow to load CorelDraw (CDR), Macromedia FreeHand (FH/FHx) and OpenDocument Graphic (ODG) files as images by using LibreOffice Draw (headless).  
+Allows Pillow to load CorelDraw (CDR), Macromedia FreeHand (FH/FHx) and OpenDocument Graphic (ODG) files as images via headless LibreOffice Draw.  
 Requires [LibreOffice Draw](https://www.libreoffice.org/) (or OpenOffice Draw, not tested).
 
 Usage:
