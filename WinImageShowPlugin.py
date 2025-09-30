@@ -194,7 +194,7 @@ class WinImageShow():
                 self.img = img
                 self.img_ratio = img.width / img.height
                 user32.SetWindowTextW(hwnd, f"{filename} - {img.mode} - {img.width} x {img.height}")
-                user32.SetWindowPos(hwnd, 0, *self._get_win_size_for_image(img), 0)
+                user32.SetWindowPos(hwnd, 0, *self._get_win_rect_for_image(img), 0)
                 user32.RedrawWindow(hwnd, 0, 0, RDW_ERASE | RDW_INVALIDATE)
             finally:
                 return 0
@@ -222,7 +222,7 @@ class WinImageShow():
             wndclass.lpszClassName,
             window_title,
             WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-            *self._get_win_size_for_image(img),
+            *self._get_win_rect_for_image(img),
             None, None, None, None
         )
         shell32.DragAcceptFiles(self.hwnd, True)
@@ -233,7 +233,7 @@ class WinImageShow():
         user32.DestroyWindow(self.hwnd)
         gdi32.DeleteObject(self.h_bitmap)
 
-    def _get_win_size_for_image(self, img):
+    def _get_win_rect_for_image(self, img):
         """
         Show window centered on screen and never bigger than
         the actual work area (desktop minus taskbar)
@@ -264,21 +264,21 @@ class WinImageShow():
         if img.mode == "1":
             pal_size = 8
             pal = [0, 0, 0, 0, 255, 255, 255, 0]
-            bbp = 1
+            bpp = 1
         elif img.mode == "L":
             pal_size = 1024
             pal = [0] * 1024
             for i in range(256):
                 pal[4 * i:4 * i + 3] = i, i, i
-            bbp = 8
-        elif img.mode == "P":   #bbp <= 8:
+            bpp = 8
+        elif img.mode == "P":
             pal = img.getpalette("BGRX")
             pal_size = len(pal)
-            bbp = 8
+            bpp = 8
         elif img.mode == "RGB":
-            bbp = 24
+            bpp = 24
         elif img.mode == "RGBA":
-            bbp = 32
+            bpp = 32
 
         f = io.BytesIO()
         img.save(f, "DIB")
@@ -296,7 +296,7 @@ class WinImageShow():
         bmi.bmiHeader.biWidth = img.width
         bmi.bmiHeader.biHeight = img.height
         bmi.bmiHeader.biPlanes = 1
-        bmi.bmiHeader.biBitCount = bbp
+        bmi.bmiHeader.biBitCount = bpp
         bmi.bmiHeader.biCompression = BI_RGB
         bmi.bmiHeader.biSizeImage = ((((img.width * bmi.bmiHeader.biBitCount) + 31) & ~31) >> 3) * img.height
         bmi.bmiHeader.biClrUsed = biClrUsed
@@ -323,5 +323,5 @@ if sys.platform == "win32":
     setattr(Image, "_show", _show)
 
 if __name__ == "__main__":
-    img = Image.open(r"_test_files/test.png")
+    img = Image.open("_test_files/test.png")
     img.show()
