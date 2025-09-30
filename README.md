@@ -1,6 +1,6 @@
 # Pillow-Plugins - 7 plugins for Pillow (Python)
 
-## 1. FfmpegImagePlugin
+## 1. [FfmpegImagePlugin](/FfmpegImagePlugin.py)
 Allows [Pillow](https://pillow.readthedocs.io/) to load arbitrary video files as (virtual) multi-frame images.  
 Requires [FFmpeg](https://ffmpeg.org/).
 
@@ -14,7 +14,7 @@ img.seek(123)  # load frame 124 (seek starts counting with 0)
 img.show()
 ```
 
-## 2. FreeImagePlugin
+## 2. [FreeImagePlugin](/FreeImagePlugin)
 Read support for additional image file formats/image modes based on FreeImage.
 - MNG (first frame, i.e. not animated)
 - Apple PICT
@@ -31,7 +31,7 @@ img = Image.open("test.pct")
 img.show()
 ```
 
-## 3. GhostImagePlugin
+## 3. [GhostImagePlugin](/GhostImagePlugin)
 Allows Pillow to load PDF and Adobe Illustrator (AI) files as (virtual) multi-frame images.  
 Requires [Ghostscript](https://ghostscript.com/) (binary for Windows is included, in Debian-based systems install it with `sudo apt install ghostscript`).
 
@@ -45,7 +45,7 @@ img.seek(2)  # load page 3 (seek starts counting with 0)
 img.show()
 ```
 
-## 4. LibreImagePlugin
+## 4. [LibreImagePlugin](/LibreImagePlugin.py)
 Allows Pillow to load CorelDraw (CDR), Macromedia FreeHand (FH/FHx) and OpenDocument Graphic (ODG) files as images via headless LibreOffice Draw.  
 Requires [LibreOffice Draw](https://www.libreoffice.org/) (or OpenOffice Draw, not tested).
 
@@ -58,7 +58,7 @@ img = Image.open("test.cdr")
 img.show()
 ```
 
-## 5. SvgImagePlugin
+## 5. [SvgImagePlugin](/SvgImagePlugin)
 Allows Pillow to load SVG vector graphic files as images.  
 Depends on [pycairo](https://pycairo.readthedocs.io/) (`pip install pycairo`, also available for Windows).
 
@@ -70,7 +70,7 @@ import SvgImagePlugin
 img = Image.open("test.svg", output_width = 800)
 img.show()
 ```
-## 6. PilImagePlugin
+## 6. [PilImagePlugin](/PilImagePlugin.py)
 Simple image plugin that allows Pillow to read and write image files with a custom image file format called "PIL" (.pil). 
 
 The PIL image file format supports *any* image mode that Pillow supports - that's the idea of the format and the reason why I invented it. So it can be used to save and load images also with rather exotic modes like e.g. "PA" (palette + alpha channel) or "LA" (grayscale + alpha channel), or 1-bit images with 2 custom colors instead of b/w (rawmode "P:1").
@@ -91,7 +91,7 @@ There is also a [Thumbnail Handler Shell Extension](https://github.com/59de44955
 *Windows 11 Explorer showing thumbnails for PIL files with various image modes*     
 ![](screenshots/modes.jpg)
 
-## 7. WinImageShowPlugin
+## 7. [WinImageShowPlugin](/WinImageShowPlugin.py)
 A better and way faster Image.show() implementation for Python 3.x x64 in Windows 10/11.
 
 Images are shown in a native resizable viewer window, without creating
