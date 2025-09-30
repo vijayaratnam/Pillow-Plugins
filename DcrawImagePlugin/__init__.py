@@ -1,5 +1,3 @@
-__all__ = ["Plugin"]
-
 import io
 import os
 import shutil
