@@ -21,6 +21,7 @@ DCRAW_BIN = os.path.join(os.path.dirname(__file__), "bin", "dcraw.exe") if IS_WI
 """
   Load embedded thumbnail instead of actual RAW image if there is one
   and has at least this width (much faster).
+  Set to 0 to never load thumbnails.
 """
 MIN_THUMB_WIDTH = 640
 
@@ -52,15 +53,16 @@ def _open(fp, filename, ** kwargs):
         capture_output=True,
         startupinfo=startupinfo
     )
-    try:
-        # Are there other thumbnail formats?
-        img = Image.open(io.BytesIO(proc.stdout), formats=("JPEG", "PPM",))
-        if img.width >= MIN_THUMB_WIDTH:
-            img.filename = filename
-            img.format = raw_format
-            return img
-    except Exception as e:
-        pass
+    if MIN_THUMB_WIDTH:
+        try:
+            # Are there other thumbnail formats?
+            img = Image.open(io.BytesIO(proc.stdout), formats=("JPEG", "PPM",))
+            if img.width >= MIN_THUMB_WIDTH:
+                img.filename = filename
+                img.format = raw_format
+                return img
+        except Exception as e:
+            pass
     proc = subprocess.run(
         [DCRAW_BIN, "-c", "-h" if LOAD_HALF_SIZE else "", filename],
         capture_output=True,
