@@ -2,7 +2,7 @@
 
 ## 1. [DcrawImagePlugin](/DcrawImagePlugin)
 
-Read support for many (most?) camera RAW file formats based on dcraw.
+Read support for various camera RAW file formats based on dcraw.
 
 Requires [dcraw](http://www.dechifro.org/dcraw/) (binary for Windows is included, in Debian-based Linux distros install it with `sudo apt install dcraw`).
 
